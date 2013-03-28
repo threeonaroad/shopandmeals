@@ -39,9 +39,9 @@ public class ShoppingListController {
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")  
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-    public String create(@RequestBody ShopList shopList) {
-       shoppingListService.create(shopList);
-       return "OK";
+    public ShopList create(@RequestBody ShopList shopList) {
+       return shoppingListService.create(shopList);
+      
    }
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json") 
@@ -54,20 +54,20 @@ public class ShoppingListController {
    @RequestMapping(value = "{id}", method = RequestMethod.PUT) 
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
-     public void update(@RequestBody ShopList shopList,@PathVariable String id) {
+     public ShopList update(@RequestBody ShopList shopList,@PathVariable String id) {
 	   
 	   shoppingListService.update(shopList);	  
-	   //return shoppingListService.findById(id);
+	   return shoppingListService.findById(id);
 	   
     }
    
    @RequestMapping(value = "{id}", method = RequestMethod.DELETE) 
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
-   public void remove(@PathVariable String id) {
+   public List<ShopList> remove(@PathVariable String id) {
 	   ShopList shopList = shoppingListService.findById(id);
 	   shoppingListService.delete(shopList);
-	   //return shoppingList;
+	   return shoppingListService.findAll();
 	   
    }
    

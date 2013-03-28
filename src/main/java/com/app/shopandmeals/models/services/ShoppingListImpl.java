@@ -33,8 +33,8 @@ public class ShoppingListImpl implements IShoppingListService {
 	}
 
 	@Override
-	public void create(ShopList shopList) {
-		shoppingListDao.create(shopList);
+	public ShopList create(ShopList shopList) {
+		return shoppingListDao.create(shopList);
 		
 	}
 
