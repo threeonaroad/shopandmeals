@@ -1,0 +1,5 @@
+/* Populate tables */
+INSERT INTO shopping_lists (id, description, active) VALUES(1, 'Lista para receta sana',true);
+INSERT INTO shopping_lists (id, description,active)  VALUES(2, 'Lista para las ensaladas del fin de semana',true);
+INSERT INTO shopping_lists (id, description,active)  VALUES(3, 'Lista de la comprar general',true);
+INSERT INTO shopping_lists (id, description,active)  VALUES(4, 'Lista cup-cakes lights',true);

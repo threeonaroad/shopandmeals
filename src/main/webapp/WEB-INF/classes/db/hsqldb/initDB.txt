@@ -1,0 +1,6 @@
+/* Create tables */
+CREATE TABLE shopping_lists(
+id INTEGER 	NOT NULL IDENTITY PRIMARY KEY,
+description VARCHAR(250) NOT NULL,
+active BOOLEAN
+);
