@@ -16,58 +16,58 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.app.shopandmeals.models.entity.ShopList;
-import com.app.shopandmeals.models.services.IShoppingListService;
+import com.app.shopandmeals.models.entity.User;
+import com.app.shopandmeals.models.services.IUserService;
 
 
 @Controller
-@RequestMapping(value = "/shopping")
-@SessionAttributes("shoppingList")
-public class ShoppingListController {
+@RequestMapping(value = "/users")
+@SessionAttributes("users")
+public class UserController {
 	
 	 @Autowired
-	 private IShoppingListService shoppingListService;
+	 private IUserService userService;
 
  
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json") 
 	@ResponseBody
-    public List<ShopList> getShoppingLists() throws Exception {
-      return shoppingListService.findAll();
+    public List<User> getUsers() throws Exception {
+      return userService.findAll();
      
  	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")  
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-    public ShopList create(@RequestBody ShopList shopList) {
-       return shoppingListService.create(shopList);
+    public User create(@RequestBody User user) {
+       return userService.create(user);
       
    }
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json") 
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public ShopList getShoppingList(@PathVariable String id) {       
-	   return shoppingListService.findById(id);
+	public User getShoppingList(@PathVariable String username) {       
+	   return userService.findById(username);
 	}
 	
    @RequestMapping(value = "{id}", method = RequestMethod.PUT) 
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
-     public ShopList update(@RequestBody ShopList shopList,@PathVariable String id) {
+     public User update(@RequestBody User user,@PathVariable String username) {
 	   
-	   shoppingListService.update(shopList);	  
-	   return shopList;
+	   userService.update(user);	  
+	   return user;
 	   
     }
    
    @RequestMapping(value = "{id}", method = RequestMethod.DELETE) 
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
-   public List<ShopList> remove(@PathVariable String id) {
-	   ShopList shopList = shoppingListService.findById(id);
-	   shoppingListService.delete(shopList);
-	   return shoppingListService.findAll();
+   public List<User> remove(@PathVariable String username) {
+	   User user = userService.findById(username);
+	   userService.delete(user);
+	   return userService.findAll();
 	   
    }
    
