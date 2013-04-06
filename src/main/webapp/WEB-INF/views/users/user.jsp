@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Backbone MVC(ollection): Shopping List</title>
+    <title>Backbone MVC(ollection): Users</title>
     <!--  <link href="todos.css" media="all" rel="stylesheet" type="text/css"/> -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -206,8 +206,8 @@ a .button {
   <body>
 	<header>
 		<div class="logo">Shop&amp;Meals | 
-		<a href="#/add">Add new list |</a>
-		<a href="#"  id="edit-mode">Edit lists | </a> 
+		<a href="#/add">Add new user |</a>
+		<a href="#"  id="edit-mode">Edit user | </a> 
 		<a href="#" class="none" id="edit-done">Done</a>
 	</div>
 	</header>
@@ -220,9 +220,14 @@ a .button {
 	<div id="over" class="overbox medium">
 		<div class="logo">Shop&amp;Meals</div>
 		
-			<form class="add-list">
-				<legend><?= list ? 'Actualizar ' : 'Crear Nueva' ?> Lista</legend>
-				<input type = "text" name="description"  value="<?= list ? list.get('description') : '' ?>" />
+			<form class="add-user">
+				<legend><?= list ? 'Update ' : 'Create New' ?> Usuario</legend>
+				<label for="email">Email</label> <input type = "text" name="email"  value="<?= list ? list.get('email') : '' ?>" /> <br>
+				<label for="username">Username</label> <input type = "text" name="username"  value="<?= list ? list.get('id') : '' ?>" /> <br>
+				<label for="name">Name</label> <input type = "text" name="name"  value="<?= list ? list.get('name') : '' ?>" /> <br>
+				
+				<label for="password">Password</label> <input type = "text" name="password"  value="<?= list ? list.get('password') : '' ?>" /> <br> 
+
 				<? if (list) { ?>
 					<input type="hidden"  name="id" value="<?=list.id?>" />
 				<? } ?>
@@ -238,17 +243,18 @@ a .button {
 			<? _.each(lists,function (list){ ?>
 				<li>
 					<div class="left">
-						<a href="#" class="title"><span class="title"><?= list.get("description")?></span></a>
-						<span class="items"><?= !!list.get("items")  ? list.get("items").length: 0?> Items</span>
-						<span class="date"><?=  !!list.get("date")  ? new Date(list.get("date")).toDateString() : ''?></span>
+						<a href="#" class="title"><span class="title"><?= list.get("id")?></span></a>
+						<span class="name">Name: <?= !!list.get("name")  ? list.get("name"): ''?> </span>
+						<span class="email">Email: <?=  !!list.get("email")  ? list.get("email"): ''?> </span>
+						<span class="password">Pass: <?=  !!list.get("password")  ? list.get("password"): ''?> </span>
 						<span class="clear"></span>
 					</div>
 					<div class="right btn-edit-none none">
 						<form class="edit-list-item">
-							<button type="button" id="edit-list"> Edit list</button>
+							<button type="button" id="edit-user"> Edit user</button>
 							<input type="hidden" id ="hidden-id" name="id" value="<?=list.get('id')?>" />
 							
-						<button type="button" id="remove-list" remove-id="<?=list.get('id')?>"> Remove</button>
+						<button type="button" id="remove-user" remove-id="<?=list.get('id')?>"> Remove user</button>
 						</form>
 					</div>
 					<div class="clear"></div>
@@ -257,13 +263,16 @@ a .button {
 		</ul>		
    </script>
    
+
    <script type="text/template" id="edit-template">
-		<legend><?= list ? 'Update ' : 'Create new' ?> List</legend>
-		<form class="edit-form">
-			<label for="description">Description</label> <input type = "text" name="description"  value="<?= list ? list.get('description') : '' ?>" />
-			<label for="active">Active list</label><input type="checkbox" name="active" /> 
-		
-			<hr/>
+		<legend><?= list ? 'Update ' : 'Create new' ?> User</legend>
+		<form class="edit-user">
+			<label for="email">Email</label> <input type = "text" name="email"  value="<?= list ? list.get('email') : '' ?>" /> <br>
+				<label for="username">Username</label> <input type = "text" name="username"  value="<?= list ? list.get('id') : '' ?>" /> <br>
+				<label for="name">Name</label> <input type = "text" name="name"  value="<?= list ? list.get('name') : '' ?>" /> <br>
+				
+				<label for="password">Password</label> <input type = "text" name="password"  value="<?= list ? list.get('password') : '' ?>" /> <br> 
+
 			<button type="submit" class="button"><?= list ? 'Update' : 'Create' ?></button>
 			<?  if (list){ ?>
 				<input type="hidden"  name="id" value="<?=list.id?>" />
@@ -272,8 +281,8 @@ a .button {
 			
 		</form>
    </script>
-
-   <script>
+   
+    <script>
     
    
 	  
@@ -307,12 +316,16 @@ a .button {
 					        text: $('#' + desc).val()
 					    }),
 					    $('<span>', {
-					        class: 'items',
-					        text:"0 items"  
+					        class: 'name',
+					        text: $('#' + desc).val()  
 					    }),
 					     $('<span>', { 
-					            class: 'date' ,
-					            text: '29/Mar/2013'
+					            class: 'email' ,
+					            text: $('#' + desc).val()
+					     }),
+					     $('<span>', { 
+					            class: 'passowrd' ,
+					            text: $('#' + desc).val()
 					     }),
 					     $('<span>', { 
 					            class: 'clear' ,
@@ -349,55 +362,53 @@ a .button {
     	    escape: /\<\?\-(.+?)\?\>/gim
     	};
     
-    var ShoppingListsCollection = Backbone.Collection.extend({
-		url: 'shopping'
+    
+    var UsersCollection = Backbone.Collection.extend({
+		url: 'users/list'
     });
     
-    var ShoppingListModel = Backbone.Model.extend({
-		urlRoot: 'shopping'
+    var UsersModel = Backbone.Model.extend({
+		urlRoot: 'users/list'
     });
     
     var Router = Backbone.Router.extend({
       routes :  {
-        ''         : 'shopping',
-        'home'     : 'shopping',
+	  
+        ''         : 'users',
+        'home'     : 'users',
         'add'      : 'addList',
-        'edit/:id' : 'editList'
-        
-        
+        'edit/:id' : 'editList' 
       }
 
     });
-
-    var ShoppingListsView = Backbone.View.extend({
+    
+    var UsersView = Backbone.View.extend({
 		el : '.list-content',
 		mode:'moderna',
 		render : function(){
 			var that = this;
-			var shoppingListsCollection = new ShoppingListsCollection();
-			shoppingListsCollection.fetch({
-				success : function(shoppingListsCollection){
-					var template = _.template($('#list-template').html(), {lists: shoppingListsCollection.models});
-					that.$el.html(template).hide().fadeIn('slow');
+			var usersCollection = new UsersCollection();			
+			usersCollection.fetch({
+				success : function(usersCollection){
+					var template = _.template($('#list-template').html(), {lists: usersCollection.models});
+					that.$el.html(template).hide().fadeIn('slow');	
 				}
 			});
+			
 		},
 		events :{
-			'click #remove-list' : 'deleteList',
-			'click #edit-list' : 'editList'
+			'click #remove-user' : 'deleteList',
+			'click #edit-user' : 'editList'
 		},
 		editList : function(ev) {
 			router.navigate('edit/' + $(ev.currentTarget).parent().find('#hidden-id').val(), {trigger:true});
 		} ,
-		
-		
-		
+				
 		deleteList : function(ev) {
+			var usersModel = new UsersModel({id: $(ev.currentTarget).parent().find('#hidden-id').val()});
 			
-			var shoppingListModel = new ShoppingListModel({id: $(ev.currentTarget).parent().find('#hidden-id').val()});
-			
-			shoppingListModel.destroy({
-				success:function(shoppingListModel){
+			usersModel.destroy({
+				success:function(usersModel){
 					router.navigate('home', {trigger: true});
 					
 				}
@@ -406,19 +417,20 @@ a .button {
 		} 
 		
     });
+        
     
-    var shoppingListsView = new ShoppingListsView();
+    var usersView = new UsersView();
     
     var AddItemView = Backbone.View.extend({
     	el:'.lightbox',
     	render: function(options){
     		if(options.id){
     			var that = this;
-				that.shoppingListModel = new ShoppingListModel({id : options.id});
-				that.shoppingListModel.fetch({
-					success : function(shoppingListModel){
+				that.usersModel = new UsersModel({id : options.id});
+				that.usersModel.fetch({
+					success : function(usersModel){
 						
-						var template = _.template($('#add-item-template').html(),{list: shoppingListModel});
+						var template = _.template($('#add-item-template').html(),{list: usersModel});
 						that.$el.html(template);
 						that.showLightbox();		
 					} 
@@ -433,7 +445,7 @@ a .button {
     	},
     	events : {
 			'click #btn-hide-lightbox' : 'hideLightbox',
-			'submit form.add-list' : 'saveList',
+			'submit form.add-user' : 'saveList',
 			
     	},
     	showLightbox : function() {
@@ -449,10 +461,10 @@ a .button {
   		},
   		saveList : function(ev){
   			var listDetails = $(ev.currentTarget).serializeObject();
-			var shoppingListModel = new ShoppingListModel();
-			shoppingListModel.save(listDetails, {
-				success : function(shoppingListModel)  {
-					router.navigate('home', {trigger: true});
+			var usersModel = new UsersModel();
+			usersModel.save(listDetails, {
+				success : function(usersModel)  {
+					router.navigate('users', {trigger: true});
 				}
 			 });
 			console.log(listDetails);
@@ -462,17 +474,19 @@ a .button {
     	
     });
     
+    
+    
     var addItemView = new AddItemView();
     
     var EditListView = Backbone.View.extend({
-		el : '.shopping-lists',
+		el : '.users',
 		render : function(options){
 			if(options.id) {
 				var that = this;
-				that.shoppingListModel = new ShoppingListModel({id : options.id});
-				that.shoppingListModel.fetch({
-					success : function(shoppingListModel){
-						var template = _.template($('#edit-template').html(),{list: shoppingListModel});
+				that.usersModel = new UsersModel({id : options.id});
+				that.usersModel.fetch({
+					success : function(usersModel){
+						var template = _.template($('#edit-template').html(),{list: usersModel});
 						that.$el.html(template);
 					} 
 				});
@@ -485,7 +499,7 @@ a .button {
 			
 		},
 		events :{
-			'submit form.edit-form' : 'saveList',
+			'submit form.edit-user' : 'saveList',
 			'click .delete' : 'deleteList'
 			
 		},
@@ -493,9 +507,9 @@ a .button {
 		saveList : function(ev){
 			
 			var listDetails = $(ev.currentTarget).serializeObject();
-			var shoppingListModel = new ShoppingListModel();
-			shoppingListModel.save(listDetails, {
-				success : function(shoppingListModel)  {
+			var usersModel = new UsersModel();
+			usersModel.save(listDetails, {
+				success : function(usersModel)  {
 					router.navigate('', {trigger: true});
 				}
 			 });
@@ -504,7 +518,7 @@ a .button {
 		},
 		
 		deleteList : function(ev) {
-			this.shoppingListModel.destroy({
+			this.usersModel.destroy({
 				success:function(){
 					router.navigate('', {trigger: true});
 				}
@@ -516,8 +530,8 @@ a .button {
     var editListView = new EditListView();
     
     var router = new Router();
-    router.on('route:shopping', function(){
-      shoppingListsView.render();
+    router.on('route:users', function(){
+    	usersView.render();
     });
     
     router.on('route:editList', function(id){

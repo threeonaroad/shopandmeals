@@ -1,11 +1,13 @@
 package com.app.shopandmeals.models.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -26,7 +28,10 @@ public class ShoppingListDao implements IShoppingListDao {
     @SuppressWarnings("unchecked")
 	@Override
     public List<ShopList> findAll() {
-        return mongoTemplate.findAll(ShopList.class,"lists");
+    	
+    	Query query = new Query();
+    	query.sort().on("date",Order.DESCENDING);
+        return mongoTemplate.find(query,ShopList.class,"lists");
     }
 
     @Override
@@ -48,6 +53,7 @@ public class ShoppingListDao implements IShoppingListDao {
     public ShopList create(ShopList shopList) {
     	Random ran = new Random();
     	shopList.setId(String.valueOf(ran.nextInt(Integer.MAX_VALUE) + 0));
+    	shopList.setDate(new Date());
     	mongoTemplate.insert(shopList,"lists");
     	return shopList;
     }

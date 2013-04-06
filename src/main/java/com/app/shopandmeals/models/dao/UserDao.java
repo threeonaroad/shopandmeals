@@ -34,6 +34,7 @@ public class UserDao implements IUserDao {
     }
 	@Override
 	public User create(User user) {
+		user.setId(user.getUsername());
     	mongoTemplate.insert(user,"users");
     	return user;
 	}
@@ -48,6 +49,8 @@ public class UserDao implements IUserDao {
 	public WriteResult update(User user) {
 		 mongoTemplate.updateFirst
     			(new Query(Criteria.where("_id").is(user.getId())), Update.update("password",user.getPassword()),"users");
+		 mongoTemplate.updateFirst
+			(new Query(Criteria.where("_id").is(user.getId())), Update.update("name",user.getName()),"users");
 		 return mongoTemplate.updateFirst
 	    			(new Query(Criteria.where("_id").is(user.getId())), Update.update("email",user.getEmail()),"users");
 	}

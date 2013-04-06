@@ -57,7 +57,7 @@ public class ShoppingListController {
      public ShopList update(@RequestBody ShopList shopList,@PathVariable String id) {
 	   
 	   shoppingListService.update(shopList);	  
-	   return shopList;
+	   return shoppingListService.findById(id);
 	   
     }
    
@@ -68,7 +68,6 @@ public class ShoppingListController {
 	   ShopList shopList = shoppingListService.findById(id);
 	   shoppingListService.delete(shopList);
 	   return shoppingListService.findAll();
-	   
    }
    
    @ExceptionHandler
