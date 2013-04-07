@@ -22,8 +22,7 @@ public class UserDao implements IUserDao {
 		this.mongoTemplate = mongoTemplate;
 	}
 		
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public List<User> findAll() {
         return mongoTemplate.findAll(User.class,"users");
     }
@@ -37,6 +36,12 @@ public class UserDao implements IUserDao {
 		user.setId(user.getUsername());
     	mongoTemplate.insert(user,"users");
     	return user;
+	}
+	
+	@Override
+	public User userExists(User user) {
+		User u = mongoTemplate.findOne(new Query(Criteria.where("_id").is(user.getUsername()).andOperator(Criteria.where("password").is(user.getPassword()))), User.class, "users");
+    	return u;
 	}
 
 	@Override

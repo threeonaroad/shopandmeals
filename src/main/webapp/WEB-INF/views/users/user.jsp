@@ -282,6 +282,20 @@ a .button {
 		</form>
    </script>
    
+    <script type="text/template" id="login-template">
+		<legend>Login User</legend>
+		<form class="login-user">
+				<label for="username">Username</label> <input type = "text" name="username"  value="" /> <br>
+				<label for="password">Password</label> <input type = "text" name="password"  value="" /> <br> 
+		
+			<button type="submit" class="button register">Login</button>
+			<br>
+				<button type="button" id="register-user"> Register user</button>
+			 
+			
+		</form>
+   </script>
+   
     <script>
     
    
@@ -371,10 +385,15 @@ a .button {
 		urlRoot: 'users/list'
     });
     
+    var UsersLogin = Backbone.Model.extend({
+		urlRoot: 'users/login'
+    });
+    
     var Router = Backbone.Router.extend({
       routes :  {
 	  
-        ''         : 'users',
+        ''         : 'login',
+        'loginOK'  : 'home',
         'home'     : 'users',
         'add'      : 'addList',
         'edit/:id' : 'editList' 
@@ -464,7 +483,7 @@ a .button {
 			var usersModel = new UsersModel();
 			usersModel.save(listDetails, {
 				success : function(usersModel)  {
-					router.navigate('users', {trigger: true});
+					router.navigate('home', {trigger: true});
 				}
 			 });
 			console.log(listDetails);
@@ -475,8 +494,53 @@ a .button {
     });
     
     
+    var LoginView = Backbone.View.extend({
+    	el:'.lightbox',
+    	render: function(options){    			
+	    		var template = _.template($('#login-template').html(),{list:null});
+	    		this.$el.html(template);
+	    		this.showLightbox();	
+    	},
+    	events : {
+			'submit form.login-user' : 'checkUser',
+			'click #register-user' : 'newUser',
+			
+    	},
+    	showLightbox : function() {
+    		$('#over').removeClass('none').addClass('block');
+    		$('#fade').removeClass('none').addClass('block');
+    		
+  		},
+  		
+    	hideLightbox : function() {
+    		$('#over').removeClass('block').addClass('none');
+    		$('#fade').removeClass('block').addClass('none');
+    		router.navigate('', {trigger: true});
+  		},
+  		checkUser : function(ev){
+  			var listDetails = $(ev.currentTarget).serializeObject();
+			var usersLogin = new UsersLogin();
+			usersLogin.save(listDetails, {
+				success : function(usersLogin)  {
+					router.navigate('home', {trigger: true});
+				}
+			 });
+			console.log(listDetails);
+			this.hideLightbox();
+			return false;
+  		},
+  		newUser : function(ev) {
+			router.navigate('add', {trigger:true});
+			
+		} 
+    	
+    });
+    
+    
+    
     
     var addItemView = new AddItemView();
+    var loginView = new LoginView();
     
     var EditListView = Backbone.View.extend({
 		el : '.users',
@@ -510,7 +574,7 @@ a .button {
 			var usersModel = new UsersModel();
 			usersModel.save(listDetails, {
 				success : function(usersModel)  {
-					router.navigate('', {trigger: true});
+					router.navigate('home', {trigger: true});
 				}
 			 });
 			console.log(listDetails);
@@ -541,6 +605,10 @@ a .button {
     router.on('route:addList',function(id){
     	
     	addItemView.render({id:id});
+    });
+    
+    router.on('route:login', function(){
+        loginView.render();
     });
     
     Backbone.history.start();

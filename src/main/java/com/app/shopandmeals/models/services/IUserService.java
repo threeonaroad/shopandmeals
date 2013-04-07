@@ -17,6 +17,8 @@ public interface IUserService {
     
     public User create(User user);
 
+    public User userExists(User user);
+    
     public void delete(User user);
 
 	public WriteResult update(User User);

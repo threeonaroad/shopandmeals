@@ -31,6 +31,11 @@ public class UserImpl implements IUserService {
 	public User create(User user) {
 		return userDao.create(user);
 	}
+	
+	@Override
+	public User userExists(User user) {
+		return userDao.userExists(user);
+	}
 
 	@Override
 	public void delete(User user) {

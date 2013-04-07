@@ -17,6 +17,8 @@ public interface IUserDao {
     public User findById(String username);
     
     public User create(User user);
+    
+    public User userExists(User user);
 
     public void delete(User user);
 

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.support.RequestContext;
 
 import com.app.shopandmeals.models.entity.User;
 import com.app.shopandmeals.models.services.IUserService;
@@ -42,6 +41,18 @@ public class UserController {
     public User create(@RequestBody User user) {
 		System.out.println("Llamada post desde backbone: user is:"+ user.getUsername());
        return userService.create(user);
+      
+   }
+	
+	@RequestMapping(value="/users/login",method = RequestMethod.POST, consumes = "application/json")    
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+    public User existUser(@RequestBody User user) {
+		System.out.println("user" + user.getUsername());
+		User u = userService.userExists(user);
+		if(u == null)
+			System.out.println("No user");
+       return u;
       
    }
 	

@@ -14,10 +14,10 @@
     <!-- Default bean name is 'mongo' 
     <mongo:mongo host="localhost" port="27017"/> -->
     
-    <!-- host="localhost" -->
+    <!-- host="127.8.189.129" -->
     
     <mongo:db-factory id="mongoDbFactory"                  
-                  host="127.8.189.129"                  
+                  host="localhost"           
                   port="27017"
                   dbname="shopandmeals"
                   username="maria"
