@@ -11,7 +11,7 @@ import com.mongodb.WriteResult;
 
 public interface IShoppingListService {
 
-	  public List<ShopList> findAll();
+		public List<ShopList> findAll();
 
 	    public ShopList findById(String shopListId);
 	    
@@ -20,4 +20,6 @@ public interface IShoppingListService {
 	    public void delete(ShopList shopList);
 
 		public WriteResult update(ShopList shopList);
+		
+		public WriteResult updateItems(String id, String[] description);
 }

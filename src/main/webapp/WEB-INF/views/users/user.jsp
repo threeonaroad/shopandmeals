@@ -8,6 +8,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.10/backbone-min.js"></script>
     
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   </head>
   
   <style>

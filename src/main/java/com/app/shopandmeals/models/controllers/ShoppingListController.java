@@ -61,6 +61,16 @@ public class ShoppingListController {
 	   
     }
    
+   @RequestMapping(value = "/items/{id}", method = RequestMethod.PUT) 
+   @ResponseStatus(HttpStatus.OK)
+   @ResponseBody
+     public ShopList updateItems(@RequestBody ShopList shopList, @PathVariable String id) {
+	   String[] description = shopList.getItems();
+	   shoppingListService.updateItems(id,description);	  
+	   return shoppingListService.findById(id);
+	   
+    }
+   
    @RequestMapping(value = "{id}", method = RequestMethod.DELETE) 
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
@@ -77,6 +87,22 @@ public class ShoppingListController {
 		out.println( "Should be a 406" );
 	}
 	
-	
+	public class Items{
+		private String id;
+		private String[] items;
+		public String getId() {
+			return id;
+		}
+		public void setId(String id) {
+			this.id = id;
+		}
+		public String[] getItems() {
+			return items;
+		}
+		public void setItems(String[] items) {
+			this.items = items;
+		}
+		
+	}
 	
 }

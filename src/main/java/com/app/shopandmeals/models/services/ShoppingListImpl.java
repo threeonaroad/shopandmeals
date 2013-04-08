@@ -49,5 +49,9 @@ public class ShoppingListImpl implements IShoppingListService {
 		return shoppingListDao.update(shopList);
 	}
 	
-	;
+	@Override
+	public WriteResult updateItems(String id, String[] description) {
+		return shoppingListDao.updateItems(id, description);
+	}
+	
 }

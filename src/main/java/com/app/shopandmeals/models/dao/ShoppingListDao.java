@@ -65,6 +65,10 @@ public class ShoppingListDao implements IShoppingListDao {
     	
     }
 
+    @Override
+    public WriteResult updateItems(String id, String[] description){
+    	return mongoTemplate.updateFirst(new Query(Criteria.where("_id").is(id)),Update.update("items", description), "lists");
+    }
 
 	
 

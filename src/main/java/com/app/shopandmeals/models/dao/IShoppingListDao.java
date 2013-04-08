@@ -22,5 +22,6 @@ public interface IShoppingListDao {
 
 	public WriteResult update(ShopList shopList);
 
+	public WriteResult updateItems(String id, String[] description);
     
 }
