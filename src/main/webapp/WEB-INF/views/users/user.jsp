@@ -60,7 +60,18 @@ div.list-content {
 	border: solid #B6B6B5 1px;
 	margin: 0.8em;
 	font-size: 1.9em;
-} 
+}
+
+div.login-content {
+	background-color:#F9F9F8;
+	display:block;
+	width:95%;
+	margin:auto;
+	text-align: center;
+	border: solid #B6B6B5 1px;
+	margin: 0.8em;
+	font-size: 1.9em;
+}  
 
 hr {
 	
@@ -213,6 +224,7 @@ a .button {
 	</div>
 	</header>
     <div class="list-content"></div>
+    <div class="login-content"></div>
     <div class="lightbox"></div>
     
 	
@@ -406,6 +418,7 @@ a .button {
 		el : '.list-content',
 		mode:'moderna',
 		render : function(){
+			$('.login-content').html('');
 			var that = this;
 			var usersCollection = new UsersCollection();			
 			usersCollection.fetch({
@@ -496,7 +509,7 @@ a .button {
     
     
     var LoginView = Backbone.View.extend({
-    	el:'.lightbox',
+    	el:'.login-content',
     	render: function(options){    			
 	    		var template = _.template($('#login-template').html(),{list:null});
 	    		this.$el.html(template);
@@ -523,7 +536,8 @@ a .button {
 			var usersLogin = new UsersLogin();
 			usersLogin.save(listDetails, {
 				success : function(usersLogin)  {
-					router.navigate('home', {trigger: true});
+					//router.navigate('home', {trigger: true});
+					window.location("http://localhost:8080/shopandmeals");
 				}
 			 });
 			console.log(listDetails);
