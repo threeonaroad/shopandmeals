@@ -497,7 +497,10 @@ a .button {
 			var usersModel = new UsersModel();
 			usersModel.save(listDetails, {
 				success : function(usersModel)  {
-					router.navigate('home', {trigger: true});
+					localStorage.clear();
+					localStorage.setItem("user",JSON.stringify(listDetails));
+					window.location.href="http://localhost:8080/shopandmeals/shopping/lists";
+					//router.navigate('home', {trigger: true});
 				}
 			 });
 			console.log(listDetails);
@@ -537,7 +540,10 @@ a .button {
 			usersLogin.save(listDetails, {
 				success : function(usersLogin)  {
 					//router.navigate('home', {trigger: true});
-					window.location("http://localhost:8080/shopandmeals");
+					//window.location("http://localhost:8080/shopandmeals");
+					localStorage.clear();
+					localStorage.setItem("user",JSON.stringify(listDetails));
+					window.location.href="http://localhost:8080/shopandmeals/shopping/lists";
 				}
 			 });
 			console.log(listDetails);

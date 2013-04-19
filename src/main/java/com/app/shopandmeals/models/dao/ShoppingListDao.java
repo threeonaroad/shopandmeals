@@ -25,12 +25,21 @@ public class ShoppingListDao implements IShoppingListDao {
 		this.mongoTemplate = mongoTemplate;
 	}
 		
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public List<ShopList> findAll() {
     	
     	Query query = new Query();
     	query.sort().on("date",Order.DESCENDING);
+        return mongoTemplate.find(query,ShopList.class,"lists");
+    }
+    
+    @Override
+    public List<ShopList> findAll(String username) {
+    	//System.out.println("buscando listas de usuario:" + username);
+    	Query query = new Query(Criteria.where("users").is(username));
+    	//System.out.println("query:"+ query);
+    	query.sort().on("date",Order.DESCENDING);
+    	//System.out.println(mongoTemplate.find(query,ShopList.class,"lists"));
         return mongoTemplate.find(query,ShopList.class,"lists");
     }
 
@@ -50,12 +59,22 @@ public class ShoppingListDao implements IShoppingListDao {
     }
     
     @Override
-    public ShopList create(ShopList shopList) {
+    public ShopList create(ShopList shopList, String username) {
     	Random ran = new Random();
+    	if(username!= null){
+    		String[] users = new String[]{username};
+    		shopList.setUsers(users);
+    	}
     	shopList.setId(String.valueOf(ran.nextInt(Integer.MAX_VALUE) + 0));
     	shopList.setDate(new Date());
+    	
     	mongoTemplate.insert(shopList,"lists");
     	return shopList;
+    }
+    
+    @Override
+    public ShopList create(ShopList shopList) {
+    	return create(shopList, null);
     }
 
     @Override
@@ -67,7 +86,8 @@ public class ShoppingListDao implements IShoppingListDao {
 
     @Override
     public WriteResult updateItems(String id, String[] description){
-    	return mongoTemplate.updateFirst(new Query(Criteria.where("_id").is(id)),Update.update("items", description), "lists");
+    	return mongoTemplate.upsert(new Query(Criteria.where("_id").is(id)),Update.update("items", description), "lists");
+    			
     }
 
 	

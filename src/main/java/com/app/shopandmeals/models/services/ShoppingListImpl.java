@@ -2,16 +2,11 @@ package com.app.shopandmeals.models.services;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 
 import com.app.shopandmeals.models.dao.IShoppingListDao;
 import com.app.shopandmeals.models.entity.ShopList;
-import com.app.shopandmeals.models.entity.ShoppingList;
 import com.mongodb.WriteResult;
 
 
@@ -26,6 +21,11 @@ public class ShoppingListImpl implements IShoppingListService {
 	public List<ShopList> findAll() {
 		return shoppingListDao.findAll();
 	}
+	
+	@Override
+	public List<ShopList> findAll(String username) {
+		return shoppingListDao.findAll(username);
+	}
 
 	@Override
 	public ShopList findById(String shopListId) {
@@ -35,6 +35,12 @@ public class ShoppingListImpl implements IShoppingListService {
 	@Override
 	public ShopList create(ShopList shopList) {
 		return shoppingListDao.create(shopList);
+		
+	}
+	
+	@Override
+	public ShopList create(ShopList shopList, String username) {
+		return shoppingListDao.create(shopList,username);
 		
 	}
 

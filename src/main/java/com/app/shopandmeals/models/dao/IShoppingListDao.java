@@ -13,10 +13,14 @@ import com.mongodb.WriteResult;
 public interface IShoppingListDao {
 
     public List<ShopList> findAll();
+    
+    public List<ShopList> findAll(String username);
 
     public ShopList findById(String shopListId);
     
     public ShopList create(ShopList shopList);
+    
+    public ShopList create(ShopList shopList, String username);
 
     public void delete(ShopList shopList);
 
@@ -25,3 +29,4 @@ public interface IShoppingListDao {
 	public WriteResult updateItems(String id, String[] description);
     
 }
+
