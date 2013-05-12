@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.app.shopandmeals.models.entity.ListUser;
 import com.app.shopandmeals.models.entity.ShopList;
 import com.app.shopandmeals.models.entity.User;
 import com.app.shopandmeals.models.services.IShoppingListService;
+import com.app.shopandmeals.models.services.IUserService;
 
 
 @Controller
@@ -29,6 +30,9 @@ public class ShoppingListController {
 	
 	 @Autowired
 	 private IShoppingListService shoppingListService;
+	 
+	 @Autowired
+	 private IUserService userService;
 
  
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json") 
@@ -41,7 +45,6 @@ public class ShoppingListController {
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = "application/json") 
 	@ResponseBody
     public List<ShopList> getShoppingLists(@PathVariable String id) throws Exception {
-      //System.out.println("username to be retrieved:" + id);
       return shoppingListService.findAll(id);
      
  	}
@@ -50,17 +53,7 @@ public class ShoppingListController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
     public ShopList create(@RequestBody ShopList shopList) {
-		 //String username;
 		String username = shopList.getUsers()[0];
-		/*System.out.println("creating list with username: "+ desc);
-		String[] info = desc.split(",");
-		String[] elem = info[0].split(":");
-		String description = elem[1];
-		System.out.println("Description is: "+ description);
-		elem = info[1].split(":");
-		String username = elem[1];*/
-		System.out.println("entering creating list");
-		//new ShopList();
        return shoppingListService.create(shopList,username);
       
    }
@@ -72,15 +65,18 @@ public class ShoppingListController {
 	   return shoppingListService.findById(id);
 	}
 	
-  /* @RequestMapping(value = "{id}", method = RequestMethod.PUT) 
-   @ResponseStatus(HttpStatus.OK)
-   @ResponseBody
-     public ShopList update(@RequestBody ShopList shopList,@PathVariable String id) {
-	   
-	   shoppingListService.update(shopList);	  
-	   return shoppingListService.findById(id);
-	   
-    }*/
+	@RequestMapping(value = "/share/{id}", method = RequestMethod.PUT) 
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public ShopList updateListShared(@PathVariable String id, @RequestBody ListUser listUser) {
+		User  u = userService.findById(listUser.getUsername());
+		if (u != null){
+			shoppingListService.updateListShared(id, listUser.getUsername());
+			return shoppingListService.findById(id);
+		}
+		else
+			return null;
+	}
    
    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT) 
    @ResponseStatus(HttpStatus.OK)
@@ -113,7 +109,6 @@ public class ShoppingListController {
    
    @RequestMapping(value = "/lists", method = RequestMethod.GET) 
    public String toLists() {
-	   System.out.println("Entra en lists.htm?");
 		return "lists/lists";
      
   }

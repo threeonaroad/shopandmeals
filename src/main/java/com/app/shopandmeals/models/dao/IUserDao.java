@@ -4,6 +4,7 @@
  */
 package com.app.shopandmeals.models.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.app.shopandmeals.models.entity.User;
@@ -23,6 +24,12 @@ public interface IUserDao {
     public void delete(User user);
 
 	public WriteResult update(User User);
-
+	
+	public WriteResult updateUserWithMenus(String username, int last_menus, ArrayList<Integer> notVisitedMenus, int newMenuVisited);
+	//public WriteResult updateLastMenus(String username, int last_menus);
+	
+	//public WriteResult updateMenus(String username, int newMenuVisited);
+	
+	//public WriteResult updateMenus(String username, ArrayList<Integer> notVisitedMenus);
     
 }

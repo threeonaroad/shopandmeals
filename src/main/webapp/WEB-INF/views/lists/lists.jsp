@@ -236,6 +236,27 @@ a .button {
 	<div id="fade" class="fadebox">&nbsp;</div>
 	</script>
 	
+	<script type="text/template" id="share-list-template">
+	<div id="over" class="overbox medium">
+		<div class="logo">Shop&amp;Meals</div>
+			<span> <?= error ? error : '' ?> </span>
+			<form class="share-list">
+				<legend>Search user to share</legend>
+				<input type = "text" name="username"  id="username" value='' />
+				<? if (id) { ?>
+					<input type="hidden"  id="hidden-id" name="id" value="<?=id?>" />
+				<? } ?>
+				<button type="submit" id="btn-share-list" href="#">Aceptar</button> 
+				<button type="button" id="btn-hide-lightbox" href="#">HideLightBox</button>
+			</form>
+		</div>
+	<div id="fade" class="fadebox">&nbsp;</div>
+	</script>
+	
+	
+	
+	
+	
 	
 	<script type="text/template" id="add-item-template">
 	<div id="over" class="overbox medium">
@@ -249,6 +270,7 @@ a .button {
 				<? } ?>
 				<button type="submit" id="btn-add-list" href="#">Aceptar</button> 
 				<button type="button" id="btn-hide-lightbox" href="#">HideLightBox</button>
+			
 			</form>
 		</div>
 	<div id="fade" class="fadebox">&nbsp;</div>
@@ -295,6 +317,7 @@ a .button {
 							<button type="button" id="edit-list"> Edit list</button>
 							<input type="hidden" id ="hidden-id" name="id" value="<?=list.id?>" />
 						<button type="button" id="remove-list" remove-id="<?=list.id?>"> Remove</button>
+						<button type="button" id="share-list" share-id="<?=list.id?>"> Share</button>
 						</form>
 					</div>
 					<div class="clear"></div>
@@ -439,9 +462,17 @@ a .button {
 		urlRoot: 'list'
     });
     
+    var ShoppingShareListModel = Backbone.Model.extend({
+		urlRoot: 'share',
+		/*initialize: function(id, userShared){
+			this.username= userShared.username;
+		}*/
+    });
+    
     var ShoppingListUserModel = Backbone.Model.extend({
 		urlRoot: 'user'
     });
+    
     
     var ShoppingNewListModel = Backbone.Model.extend({
 		urlRoot: 'user/new',
@@ -472,12 +503,14 @@ a .button {
         'home'                   : 'shopping',
         'add'                    : 'addList',
         'edit/:id'               : 'editList',
+        'share/:id'               : 'shareList',
         'items/:id'              : 'getItems',
         'user/:id'               : 'addList',
         'user'                   : 'addList',
         'removedItem/:id'		 : 'getItems',	
         'editItem/:id/:item'     : 'editItem',
         'addItem/:id'            : 'addItem',
+       
       }
 
     });
@@ -501,9 +534,7 @@ a .button {
 		editList : function(ev) {
 			
 			router.navigate('editItem/' + this.listId + "/" + $(ev.currentTarget).parent().find('#hidden-desc').val(), {trigger:true});
-		},
-		
-		
+		},		
 		
 		deleteList : function(ev) {
 			
@@ -568,11 +599,18 @@ a .button {
 		},
 		events :{
 			'click #remove-list' : 'deleteList',
-			'click #edit-list' : 'editList'
+			'click #edit-list' : 'editList',
+			'click #share-list' : 'shareList',
 		},
 		editList : function(ev) {
 			
 			router.navigate('edit/' + $(ev.currentTarget).parent().find('#hidden-id').val(), {trigger:true});
+		} ,
+		
+		shareList : function(ev) {
+			
+			alert("compartimos lista");
+			router.navigate('share/' + $(ev.currentTarget).parent().find('#hidden-id').val(), {trigger:true});
 		} ,
 		
 		
@@ -662,6 +700,97 @@ a .button {
     
     var addItemView = new AddItemView();
     
+    var ShareItemView = Backbone.View.extend({
+    	el:'.lightbox',
+    	
+    	render: function(options){
+    		
+    		console.log(JSON.stringify(options));
+    		/*var user = JSON.parse(localStorage.getItem("user"));
+			var username = user["username"];
+			console.log("user in add new List:" + username);*/
+    		if(options.id){
+    			var that = this;
+    			var template;
+    			if(options.error)
+					template = _.template($('#share-list-template').html(),{id: options.id,error:options.error});
+    			else
+    				template = _.template($('#share-list-template').html(),{id: options.id,error:null});
+				that.$el.html(template);
+				that.showLightbox();		
+  
+    		} else {
+    			if(options.error)
+	    			var template = _.template($('#share-list-template').html(),{list:null,error:options.error});
+    			else
+    				template = _.template($('#share-list-template').html(),{list:null,error:null});
+	    		this.$el.html(template);
+	    		this.showLightbox();	
+    		}
+    	},
+    	events : {
+			'click #btn-hide-lightbox' : 'hideLightbox',
+			'submit form.share-list' : 'shareList',
+			
+    	},
+    	showLightbox : function() {
+    		$('#over').removeClass('none').addClass('block');
+    		$('#fade').removeClass('none').addClass('block');
+    		
+  		},
+  		
+    	hideLightbox : function() {
+    		$('#over').removeClass('block').addClass('none');
+    		$('#fade').removeClass('block').addClass('none');
+    		router.navigate('', {trigger: true});
+  		},
+  		shareList : function(ev){
+  			
+  		    var that = this;
+  			var listDetails = $(ev.currentTarget).serializeObject();
+  			//alert("usuario es" + JSON.stringify(listDetails));
+  			//alert("cond"+ $(ev.currentTarget).parent().find('#hidden-id').val());
+  			//var userShared = $(ev.currentTarget).parent().find('#userShared').val();
+  			
+  			var shareShoppingListModel = new ShoppingShareListModel();
+  			shareShoppingListModel.save(listDetails,{
+  				success : function(shareShoppingListModel){
+  				},
+  				error: function(shareShoppingListModel){
+  					//alert("entramos error");
+  					 shareItemView.render({id:$(ev.currentTarget).parent().find('#hidden-id').val(),error:"User is not existing"});
+  					//var template = _.template($('#share-list-template').html(),{id: $(ev.currentTarget).parent().find('#hidden-id').val()});
+  					//that.$el.html(template);
+  					//that.showLightbox();	
+  				}
+  					
+  			});
+  			//console.log(JSON.stringify(listDetails));
+  			
+			//alert("cond"+ $(ev.currentTarget).parent().find('#hidden-id').val());
+			/*var modelOptions = !!$(ev.currentTarget).parent().find('#hidden-id').val() ? {id: $(ev.currentTarget).parent().find('#hidden-id').val()}: {};
+			//alert("modelOp" + JSON.stringify(modelOptions));
+			var model = !!$(ev.currentTarget).parent().find('#hidden-id').val() ? new ShoppingListUserModel(modelOptions): new ShoppingNewListModel();
+			//alert("listdetails" + JSON.stringify(listDetails));
+			//listDetails.username=username;		
+			
+			
+			
+			model.save(listDetails, {
+				success : function(model)  {				
+				   // localStorage.setItem(shoppingListUserModel.id,JSON.stringify(shoppingListUserModel));
+					router.navigate('home', {trigger: true});
+				}
+			 });*/
+			this.hideLightbox();
+			return false;
+  		}
+    	
+    });
+    
+    var shareItemView = new ShareItemView();
+    
+    
     /* EDIT ITEMS OF A LIST*/
      var EditItemView = Backbone.View.extend({
     	el:'.lightbox',
@@ -716,6 +845,9 @@ a .button {
     
     var editItemView = new EditItemView();
     
+
+    
+    
     /*END OF EDIT ITEMS OF A LIST*/
     
     
@@ -726,6 +858,10 @@ a .button {
     
     router.on('route:editList', function(id){
         addItemView.render({id:id});
+    });
+    
+    router.on('route:shareList', function(id,error){
+        shareItemView.render({id:id,error:error});
     });
     
     router.on('route:addList',function(id){

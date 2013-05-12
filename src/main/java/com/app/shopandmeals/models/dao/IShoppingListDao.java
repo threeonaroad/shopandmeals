@@ -26,6 +26,8 @@ public interface IShoppingListDao {
 
 	public WriteResult update(ShopList shopList);
 
+	public WriteResult updateListShared(String id, String username);
+	
 	public WriteResult updateItems(String id, String[] description);
     
 }

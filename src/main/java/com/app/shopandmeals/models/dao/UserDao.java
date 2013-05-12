@@ -1,5 +1,6 @@
 package com.app.shopandmeals.models.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,21 +53,26 @@ public class UserDao implements IUserDao {
 
 	@Override
 	public WriteResult update(User user) {
-		 mongoTemplate.updateFirst
-    			(new Query(Criteria.where("_id").is(user.getId())), Update.update("password",user.getPassword()),"users");
-		 mongoTemplate.updateFirst
-			(new Query(Criteria.where("_id").is(user.getId())), Update.update("name",user.getName()),"users");
+		Update updateUser = new Update();
+		updateUser.set("password",user.getPassword());
+		updateUser.set("name",user.getName());
+		updateUser.set("email",user.getEmail());
+		
 		 return mongoTemplate.updateFirst
-	    			(new Query(Criteria.where("_id").is(user.getId())), Update.update("email",user.getEmail()),"users");
+	    			(new Query(Criteria.where("_id").is(user.getId())),updateUser,"users");
 	}
 
-
 	
-
-
-	
-
-
-
+	@Override
+	public WriteResult updateUserWithMenus(String username, int last_menus, ArrayList<Integer> notVisitedMenus, int newMenuVisited) {
+		Update updateUser = new Update();
+		updateUser.addToSet("menus", newMenuVisited);
+		updateUser.set("last_menus",last_menus);
+		updateUser.set("not_visited_menus", notVisitedMenus);
+		
+		
+		 return mongoTemplate.updateFirst
+	    			(new Query(Criteria.where("_id").is(username)), updateUser,"users");
+	}
 	
 }

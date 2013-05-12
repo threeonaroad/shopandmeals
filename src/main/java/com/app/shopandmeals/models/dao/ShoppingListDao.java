@@ -35,11 +35,8 @@ public class ShoppingListDao implements IShoppingListDao {
     
     @Override
     public List<ShopList> findAll(String username) {
-    	//System.out.println("buscando listas de usuario:" + username);
     	Query query = new Query(Criteria.where("users").is(username));
-    	//System.out.println("query:"+ query);
     	query.sort().on("date",Order.DESCENDING);
-    	//System.out.println(mongoTemplate.find(query,ShopList.class,"lists"));
         return mongoTemplate.find(query,ShopList.class,"lists");
     }
 
@@ -52,7 +49,6 @@ public class ShoppingListDao implements IShoppingListDao {
     public WriteResult update(ShopList shopList ) {
     	String id = shopList.getId();
     	String description = shopList.getDescription();
-    	//System.out.println("id:" + id + " desc:" + description);
     	return mongoTemplate.updateFirst
     			(new Query(Criteria.where("_id").is(id)), Update.update("description", description),"lists");
     	
@@ -89,6 +85,11 @@ public class ShoppingListDao implements IShoppingListDao {
     	return mongoTemplate.upsert(new Query(Criteria.where("_id").is(id)),Update.update("items", description), "lists");
     			
     }
+
+	@Override
+	public WriteResult updateListShared(String id, String username) {
+		return mongoTemplate.upsert(new Query(Criteria.where("_id").is(id)),new Update().addToSet("users", username),"lists");
+	}
 
 	
 

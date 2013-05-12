@@ -30,7 +30,6 @@ public class UserController {
 	@RequestMapping(value="/users/list", method = RequestMethod.GET, produces = "application/json") 
 	@ResponseBody
     public List<User> getUsers() throws Exception {
-	  System.out.println("Entra en findAll");
       return userService.findAll();
      
  	}
@@ -39,8 +38,10 @@ public class UserController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
     public User create(@RequestBody User user) {
-		System.out.println("Llamada post desde backbone: user is:"+ user.getUsername());
-       return userService.create(user);
+		if (userService.findById(user.getUsername()) == null)
+			return userService.create(user);
+		else
+			return null;
       
    }
 	
@@ -48,7 +49,6 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
     public User existUser(@RequestBody User user) {
-		System.out.println("user" + user.getUsername());
 		User u = userService.userExists(user);
 		if(u == null)
 			System.out.println("No user");
@@ -59,7 +59,7 @@ public class UserController {
 	@RequestMapping(value = "/users/list/{id}", method = RequestMethod.GET, produces = "application/json") 
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public User getUserList(@PathVariable String id) {       
+	public User getUserList(@PathVariable String id) {  
 	   return userService.findById(id);
 	}
 	
@@ -67,7 +67,6 @@ public class UserController {
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
      public User update(@RequestBody User user,@PathVariable String id) {
-	   System.out.println("Borrando desde backbone: user is:"+ id);
 	   userService.update(user);	  
 	   return user;
 	   
@@ -77,7 +76,6 @@ public class UserController {
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
    public List<User> remove(@PathVariable String id) {
-	   System.out.println("Borrando desde backbone: user is:"+ id);
 	   User user = userService.findById(id);
 	   userService.delete(user);
 	   return userService.findAll();
@@ -85,7 +83,6 @@ public class UserController {
    }
    @RequestMapping(value = "/user", method = RequestMethod.GET) 
    public String toUser() {
-	   System.out.println("Entra en user.htm?");
 		return "users/user";
      
   }

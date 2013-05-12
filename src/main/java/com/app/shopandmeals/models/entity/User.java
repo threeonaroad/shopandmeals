@@ -1,6 +1,8 @@
 package com.app.shopandmeals.models.entity;
 
 
+import java.util.ArrayList;
+
 import javax.persistence.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,7 +20,35 @@ public class User  {
 	private String password;
 	private String language;
 	private String username;
+	private int[] menus;
+	private int last_menus;
+	private int[] favourite_menus;
+	private ArrayList<Integer> not_visited_menus;
 	
+	
+	public int getLast_menus() {
+		return last_menus;
+	}
+
+	public void setLast_menus(int last_menus) {
+		this.last_menus = last_menus;
+	}	
+
+	public int[] getMenus() {
+		return menus;
+	}
+
+	public void setMenus(int[] menus) {
+		this.menus = menus;
+	}
+
+	public int[] getFavourite_menus() {
+		return favourite_menus;
+	}
+
+	public void setFavourite_menus(int[] favourite_menus) {
+		this.favourite_menus = favourite_menus;
+	}
 
 	public String getUsername() {
 		return username;
@@ -74,6 +104,14 @@ public class User  {
 
 	public void setLanguage(String language) {
 		this.language = language;
+	}
+
+	public ArrayList<Integer> getNot_visited_menus() {
+		return not_visited_menus;
+	}
+
+	public void setNot_visited_menus(ArrayList<Integer> not_visited_menus) {
+		this.not_visited_menus = not_visited_menus;
 	}
 	
 	
