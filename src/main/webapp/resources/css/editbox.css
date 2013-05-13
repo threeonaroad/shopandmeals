@@ -1,0 +1,198 @@
+
+input[type="text"],input[type="password"] {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 18px;
+	padding: 3px 0 7px 3px;
+	background: #fff;
+	border: 0;
+	box-shadow: none;
+	width: 77%;
+	outline: none;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+input[type="submit"] {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 2em;
+	margin: 10px 0 0 0;
+	padding: 10px 0;
+	width: 100%;
+	color: #fff;
+	background: #36c77b;
+	border: 0;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	
+}
+
+
+input[type="text"],input[type="password"]{
+	border-bottom:1px solid #cccccc;
+}
+input[type="submit"]:hover {
+	background: #36c77b;
+}
+input[type="text"]::-webkit-input-placeholder, input[type="password"]::-webkit-input-placeholder {
+	color: #ccc;
+	font-size:0.8em;
+	
+}
+input[type="text"]:-moz-placeholder, input[type="password"]:-moz-placeholder {
+	color: #ccc;
+	font-size:0.5em;
+}
+
+input:focus{
+    outline: none;
+}
+
+.login-bubble{
+	width: 350px;
+	padding:10x 10px 10px 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border:1px solid #cccccc;
+	margin: 10px auto;
+	-moz-box-shadow: 0 0 3px 1px #cccccc;
+	-webkit-box-shadow: 0 0 3px 1px#cccccc;
+	box-shadow: 0 0 3px 1px #cccccc;
+	
+}
+.login {
+	width: 80%;
+	margin: 10px auto;
+	
+	
+}
+
+.input-prepend {
+	width: 100%;
+	margin: 0 0 10px 0;
+	
+}
+.input-prepend .add-on {
+	color: #36c77b;
+	font-size: 2em;
+	font-weight: bold;
+	width: 20%;
+	padding: 7px 0;
+	background: #fff;
+	border:0;
+}
+
+
+
+.highlight{
+color:#FFCC66;
+font-weight:normal;
+font-size:1.4em;
+}
+
+a{
+text-decoration:none;
+}
+a.highlight:hover,a.highlight:focus{
+color:#FFCC66;
+font-weight:normal;
+font-size:1.4em;
+text-decoration:underline;
+}
+
+
+h3{
+	color:#grey;	
+	padding:5px 0px 5px 0px; 
+	font-size:1.5em;
+	font-weight:normal;
+}
+
+h4{
+	color:grey;	
+	padding:5px 0px 5px 0px; 
+	font-size:1.5em;
+	font-weight:normal;
+}
+
+.separation {
+	width:350px;
+	margin: 0 auto 0 auto;
+	padding:5px 0px 0px 5px;
+}
+hr{
+	border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	width:90%;
+	margin: 0 auto 0 auto;
+	text-align:center;
+	padding:5px 0px 0px 5px;
+	font-weight:normal;
+}
+p {
+line-height:1.2em;
+}
+.login-error{
+	font-size:1.2em;
+	color:red;
+	display:block;
+	
+}
+.visible{
+visibility:visible;
+}
+
+.hidden{
+visibility:hidden;
+}
+button
+{
+
+background  : none;
+cursor  : pointer;
+font-family: 'Open Sans', sans-serif;
+font-size   : 16px;
+color   : #fff;
+border  : 0;
+margin  : 0;
+padding : 0;
+}
+.add-on-edit {
+	color: #fff;
+	font-weight: bold;
+	
+	background: transparent;
+	border:0;
+	margin:1em 1.5em 0 0;
+	text-shadow:none;
+	font-size:1.7em;
+	
+}
+
+.medium-button{
+	
+	font-size:1.5em;
+}
+
+.highlight{
+color:#FFCC66;
+font-weight:normal;
+font-size:1.4em;
+}
+
+h3{
+ color:#grey; 
+ padding:5px 0px 5px 0px; 
+ font-size:1.5em;
+ font-weight:normal;
+}
+
+h4{
+ color:#grey; 
+ padding:5px 0px 5px 0px; 
+ font-size:1.3em;
+ font-weight:normal;
+}
