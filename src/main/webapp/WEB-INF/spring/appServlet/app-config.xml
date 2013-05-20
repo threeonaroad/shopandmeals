@@ -14,12 +14,6 @@
 	
 	<mvc:resources mapping="/resources/**" location="/resources/"/>
 
-	<!-- Mensajes de idiomas-->
-	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="/WEB-INF/mensajes/mensajes" />
-		<property name="cacheSeconds" value="0" />
-	</bean>
-
 	<!-- Configuramos Spring MVC -->
 	<import resource="mvc-config.xml" />
 	<import resource="applicationContext-mongodb.xml"/> 

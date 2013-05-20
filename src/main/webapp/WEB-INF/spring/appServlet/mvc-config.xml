@@ -9,40 +9,8 @@
 	<!-- Habilita la anotacion de Spring MVC @Controller -->
 	<annotation-driven />
 
-	<!-- Interceptores que son aplicados a todos los controladores anotados @Controller -->	
-	<interceptors>
-		<!-- Cambiamos el local cuando envia un parametro del request 'locale' e.j. /?locale=es -->
-		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
-	</interceptors>
 
-	<!-- Guardamos los cambios del local usando cookie -->
-	<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
-	
-	 <!-- Para resolver vistas Tiles -->
-	<beans:bean id="viewResolver"
-		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<beans:property name="order" value="1" />
-		<beans:property name="viewClass">
-			<beans:value>
-				org.springframework.web.servlet.view.tiles2.TilesView
-			</beans:value>
-		</beans:property>
-	</beans:bean>
 
-	
-	
-    <!-- Configuracion del layout Tiles -->
-	<beans:bean id="tilesConfigurer"
-		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
-		<beans:property name="definitions">
-			<beans:list>
-				<beans:value>/WEB-INF/tiles.xml</beans:value>
-			</beans:list>
-		</beans:property>
-	</beans:bean>
-
-	
-	
 	<!-- Views configuradas y mapeadas en un bean, ej: id="cuentas" (clases JSON, PDF, XLS, etc) -->
 	<beans:bean id="contentNegotiatingResolver"
 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">

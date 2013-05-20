@@ -1,31 +1,24 @@
 package com.app.shopandmeals.models.entity;
 
-
 import java.util.Date;
-
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Document
-public class ShopList  {
+public class ShopList {
 
 	/**
 	 * 
 	 */
 
-	@Id
-    private String id;
-	
+	private String id;
+
 	private String description;
-	
-	private String [] items;
-	
-	private String [] users;
-	
-	@NotNull
+
+	private String[] items;
+
+	private String[] users;
+
 	private Date date;
 
 	public String getId() {
@@ -67,7 +60,5 @@ public class ShopList  {
 	public void setUsers(String[] users) {
 		this.users = users;
 	}
-	
-	
-	
+
 }

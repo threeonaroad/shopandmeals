@@ -37,7 +37,11 @@ public class ShoppingListDao implements IShoppingListDao {
     public List<ShopList> findAll(String username) {
     	Query query = new Query(Criteria.where("users").is(username));
     	query.sort().on("date",Order.DESCENDING);
-        return mongoTemplate.find(query,ShopList.class,"lists");
+    	List<ShopList> lists = mongoTemplate.find(query,ShopList.class,"lists");
+    	if(lists == null || lists.size()==0)
+    		return null;
+    	else
+    		return lists;
     }
 
     @Override

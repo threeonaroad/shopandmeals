@@ -31,20 +31,24 @@ public class MenusImpl implements IMenusService {
 	@Override
 	public List<Menus> createNewSetMenus(ArrayList<Integer> menus, String username) {
 		menus = getNotVisitedMenus(menus);
-		if(menus.size()-1 == 0){
-			System.out.println("No more new menus, restarting it");
-			menus = getNotVisitedMenus(null);
+		if(menus != null && menus.size() > 0){
+			if(menus.size()-1 == 0){
+				System.out.println("No more new menus, restarting it");
+				menus = getNotVisitedMenus(null);
+			}
+			int indexSelected = getRandomMenu(menus.size()-1);
+			int selectedMenu = menus.get(indexSelected);
+			
+			List<Menus> menusReturned = menusDao.findMenusById(String.valueOf(selectedMenu));
+			
+			menus.remove(indexSelected);
+			//Update user
+			updateUser(menus,selectedMenu,username);		
+			
+			return menusReturned;
 		}
-		int indexSelected = getRandomMenu(menus.size()-1);
-		int selectedMenu = menus.get(indexSelected);
-		
-		List<Menus> menusReturned = menusDao.findMenusById(String.valueOf(selectedMenu));
-		
-		menus.remove(indexSelected);
-		//Update user
-		updateUser(menus,selectedMenu,username);		
-		
-		return menusReturned;
+		else 
+			return null;
 	}
 
 	private void updateUser(ArrayList<Integer> menus, int selectedMenu, String username){
@@ -55,6 +59,10 @@ public class MenusImpl implements IMenusService {
 	
 	public ArrayList<Integer> getNotVisitedMenus(ArrayList<Integer> notVisitedMenus){
 		int total = menusDao.getTotalMenus();
+		if(total == 0){
+			System.out.println("No menus available");
+			return null;
+		}
 		
 		if(notVisitedMenus != null && notVisitedMenus.size() > 0){
 			int finalIndex = notVisitedMenus.get(notVisitedMenus.size()-1);

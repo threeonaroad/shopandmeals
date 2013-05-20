@@ -1,15 +1,13 @@
 package com.app.shopandmeals.models.entity;
 
 
-import javax.persistence.Id;
-
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Document
 public class Menus  {
 
-	@Id
+	
     private String id;
 	
 	private String breakfast;
