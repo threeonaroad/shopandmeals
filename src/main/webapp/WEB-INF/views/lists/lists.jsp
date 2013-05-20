@@ -399,8 +399,9 @@ h3 {
 <h4> Bienvenido,<span class="highlight">{{ <?var user = JSON.parse(localStorage.getItem('user'));?><?=user.username?> }}</span> .Echa un vistazo a tus listas</h4>
  <div class="list-bubble">
   <ul> 
-	<? if (lists !== null ) {
-    _.each(lists,function (list){ 
+    <? 
+	if(typeof lists !== 'undefined' && lists.length > 0){
+	_.each(lists,function (list){ 
     
     /* Storing a copy of every list object so we do not call the database unnecessarily */
     localStorage.setItem(list.id,JSON.stringify(list)) ?>
@@ -420,9 +421,9 @@ h3 {
      </div>
      <div class="clear"></div>
     </li>
-   <? }); }
-		else{ ?>
-			 <li>Aún no tienes ninguna lista, comienza a añadirlos</li>
+   <? }); } else {
+console.log('no tienes');?>
+  <li>Aún no tienes ninguna lista, comienza a añadirlas</li>
  <? } ?>
   </ul>
 </div>  

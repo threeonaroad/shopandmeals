@@ -1,9 +1,11 @@
 package com.app.shopandmeals.models.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class ShoppingListImpl implements IShoppingListService {
 	
 	@Autowired
 	private IShoppingListDao shoppingListDao;
+	
+	static Logger logger = Logger.getLogger(ShoppingListImpl.class.getName());
 
 	@Override
 	public List<ShopList> findAll() {
@@ -27,8 +31,10 @@ public class ShoppingListImpl implements IShoppingListService {
 	@Override
 	public List<ShopList> findAll(String username) {
 		List<ShopList> lists = shoppingListDao.findAll(username);
-			if(lists == null || lists.size()==0)
-	    		return null;
+			if(lists == null || lists.size()==0){
+	    		logger.info("No lists available");
+				return new ArrayList<ShopList>();
+			}
 	    	else
 	    		return lists;
 	}
