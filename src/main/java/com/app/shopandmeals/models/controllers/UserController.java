@@ -4,6 +4,7 @@ package com.app.shopandmeals.models.controllers;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ public class UserController {
 	 @Autowired
 	 private IUserService userService;
 
+	 static Logger logger = Logger.getLogger(UserController.class.getName());
  
 	@RequestMapping(value="/users/list", method = RequestMethod.GET, produces = "application/json") 
 	@ResponseBody
@@ -51,7 +53,8 @@ public class UserController {
     public User existUser(@RequestBody User user) {
 		User u = userService.userExists(user);
 		if(u == null)
-			System.out.println("No user");
+			logger.info("No user");
+			//System.out.println("No user");
        return u;
       
    }
@@ -94,8 +97,7 @@ public class UserController {
    @ResponseStatus( value=HttpStatus.NOT_ACCEPTABLE )
 	public void exception( Throwable t, PrintWriter out )
 	{
-	   System.out.println("NA");
-		out.println( "Should be a 406" );
+	   logger.error( "Should be a 406" );
 	}
 	
   

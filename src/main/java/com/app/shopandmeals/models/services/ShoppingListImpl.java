@@ -1,6 +1,8 @@
 package com.app.shopandmeals.models.services;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,23 +26,28 @@ public class ShoppingListImpl implements IShoppingListService {
 	
 	@Override
 	public List<ShopList> findAll(String username) {
-		return shoppingListDao.findAll(username);
+		List<ShopList> lists = shoppingListDao.findAll(username);
+			if(lists == null || lists.size()==0)
+	    		return null;
+	    	else
+	    		return lists;
 	}
 
 	@Override
 	public ShopList findById(String shopListId) {
 		return shoppingListDao.findById(shopListId);
 	}
-
-	@Override
-	public ShopList create(ShopList shopList) {
-		return shoppingListDao.create(shopList);
-		
-	}
 	
 	@Override
 	public ShopList create(ShopList shopList, String username) {
-		return shoppingListDao.create(shopList,username);
+	 	Random ran = new Random();
+    	if(username!= null){
+    		String[] users = new String[]{username};
+    		shopList.setUsers(users);
+    	}
+    	shopList.setId(String.valueOf(ran.nextInt(Integer.MAX_VALUE) + 0));
+    	shopList.setDate(new Date());
+		return shoppingListDao.create(shopList);
 		
 	}
 

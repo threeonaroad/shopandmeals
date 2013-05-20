@@ -1,8 +1,6 @@
 package com.app.shopandmeals.models.dao;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -37,11 +35,7 @@ public class ShoppingListDao implements IShoppingListDao {
     public List<ShopList> findAll(String username) {
     	Query query = new Query(Criteria.where("users").is(username));
     	query.sort().on("date",Order.DESCENDING);
-    	List<ShopList> lists = mongoTemplate.find(query,ShopList.class,"lists");
-    	if(lists == null || lists.size()==0)
-    		return null;
-    	else
-    		return lists;
+    	return mongoTemplate.find(query,ShopList.class,"lists");
     }
 
     @Override
@@ -59,23 +53,12 @@ public class ShoppingListDao implements IShoppingListDao {
     }
     
     @Override
-    public ShopList create(ShopList shopList, String username) {
-    	Random ran = new Random();
-    	if(username!= null){
-    		String[] users = new String[]{username};
-    		shopList.setUsers(users);
-    	}
-    	shopList.setId(String.valueOf(ran.nextInt(Integer.MAX_VALUE) + 0));
-    	shopList.setDate(new Date());
-    	
+    public ShopList create(ShopList shopList) {  	
     	mongoTemplate.insert(shopList,"lists");
     	return shopList;
     }
     
-    @Override
-    public ShopList create(ShopList shopList) {
-    	return create(shopList, null);
-    }
+
 
     @Override
     public void delete(ShopList shopList) {

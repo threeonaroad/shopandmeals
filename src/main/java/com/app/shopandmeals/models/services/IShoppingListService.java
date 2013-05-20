@@ -17,8 +17,6 @@ public interface IShoppingListService {
 
 	    public ShopList findById(String shopListId);
 	    
-	    public ShopList create(ShopList shopList);
-	    
 	    public ShopList create(ShopList shopList, String username);
 
 	    public void delete(ShopList shopList);

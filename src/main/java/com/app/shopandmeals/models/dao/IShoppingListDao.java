@@ -20,8 +20,6 @@ public interface IShoppingListDao {
     
     public ShopList create(ShopList shopList);
     
-    public ShopList create(ShopList shopList, String username);
-
     public void delete(ShopList shopList);
 
 	public WriteResult update(ShopList shopList);

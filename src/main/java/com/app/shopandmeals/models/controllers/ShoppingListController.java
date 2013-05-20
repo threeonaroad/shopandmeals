@@ -4,6 +4,7 @@ package com.app.shopandmeals.models.controllers;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,7 @@ public class ShoppingListController {
 	 @Autowired
 	 private IUserService userService;
 
+	 static Logger logger = Logger.getLogger(ShoppingListController.class.getName());
  
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json") 
 	@ResponseBody
@@ -118,6 +120,6 @@ public class ShoppingListController {
    @ResponseStatus( value=HttpStatus.NOT_ACCEPTABLE )
 	public void exception( Throwable t, PrintWriter out )
 	{
-		out.println( "Should be a 406" );
+	   logger.error( "Should be a 406" );
 	}	
 }

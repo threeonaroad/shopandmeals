@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,8 @@ public class MenusController {
 
 	 @Autowired
 	 private IUserService userService;
+	 
+	 static Logger logger = Logger.getLogger(MenusController.class.getName());
  
 	
 	@RequestMapping(value="/list/{id}", method = RequestMethod.GET, produces = "application/json")  
@@ -39,11 +42,13 @@ public class MenusController {
 		ArrayList<Integer> notvisitedMenus = user.getNot_visited_menus();
 		List<Menus> listMenus = null;
 		if(notvisitedMenus == null){
-			System.out.println("Llamada GET lastMenus with username" + user.getUsername() + "and first time entering");
+			//System.out.println
+			logger.info("Llamada GET lastMenus with username" + user.getUsername() + "and first time entering");
 		}
 		else{
 			String lastMenu = String.valueOf(user.getLast_menus());		
-			System.out.println("Llamada GET lastMenus with username" + user.getUsername() + "and lastMenus:" + lastMenu);
+			//System.out.println
+			logger.info("Llamada GET lastMenus with username" + user.getUsername() + "and lastMenus:" + lastMenu);
 			listMenus = menusService.findMenusById(lastMenu);
 		}
        return listMenus;
@@ -54,7 +59,8 @@ public class MenusController {
     public List<Menus>  getNewMenus(@PathVariable String id) {
 		User user = userService.findById(id);		
 		ArrayList<Integer> notvisitedMenus = user.getNot_visited_menus();
-		System.out.println("put with lastmenu");
+		//System.out.println
+		logger.info("put with lastmenu");
 		List<Menus> listMenus = null;
 		try{
 			if(notvisitedMenus == null)
@@ -64,7 +70,8 @@ public class MenusController {
 				listMenus = menusService.createNewSetMenus(NotVisitedmenus,user.getUsername());
 			}
 			
-		System.out.println("Llamada PUT lastMenus with username" + user.getUsername());
+		//System.out.println
+			logger.info("Llamada PUT lastMenus with username" + user.getUsername());
 		}catch(Exception e){
 			System.out.println("exception" + e.getMessage());
 		}
@@ -74,7 +81,8 @@ public class MenusController {
 	
 	@RequestMapping(value = "/menus", method = RequestMethod.GET) 
 	   public String toMenus() {
-		   System.out.println("Entra en menus.htm?");
+		   //System.out.println
+		logger.info("Entra en menus.htm?");
 			return "menus/menus";
 	     
 	  }
@@ -84,8 +92,7 @@ public class MenusController {
    @ResponseStatus( value=HttpStatus.NOT_ACCEPTABLE )
 	public void exception( Throwable t, PrintWriter out )
 	{
-	   System.out.println("NA");
-		out.println( "Should be a 406" );
+	   logger.error( "Should be a 406" );
 	}
 	
   

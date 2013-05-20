@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class MenusImpl implements IMenusService {
 	
 	@Autowired
 	private IUserDao userDao;
+	
+	static Logger logger = Logger.getLogger(MenusImpl.class.getName());
 
 
 	@Override
@@ -33,7 +36,8 @@ public class MenusImpl implements IMenusService {
 		menus = getNotVisitedMenus(menus);
 		if(menus != null && menus.size() > 0){
 			if(menus.size()-1 == 0){
-				System.out.println("No more new menus, restarting it");
+				//System.out.println
+				logger.info("No more new menus, restarting it");
 				menus = getNotVisitedMenus(null);
 			}
 			int indexSelected = getRandomMenu(menus.size()-1);
@@ -60,27 +64,34 @@ public class MenusImpl implements IMenusService {
 	public ArrayList<Integer> getNotVisitedMenus(ArrayList<Integer> notVisitedMenus){
 		int total = menusDao.getTotalMenus();
 		if(total == 0){
-			System.out.println("No menus available");
+			//System.out.println
+			logger.info("No menus available");
 			return null;
 		}
 		
 		if(notVisitedMenus != null && notVisitedMenus.size() > 0){
 			int finalIndex = notVisitedMenus.get(notVisitedMenus.size()-1);
-			System.out.println("final index" + finalIndex);
+			//System.out.println
+			logger.info("final index in menus: " + finalIndex);
 			if(finalIndex < total){
-				System.out.println("we need to update notVisited as new menus have appeared");
+				//System.out.println
+				logger.info("we need to update notVisited as new menus have appeared");
 
-					System.out.println("more than one: "+ (total-finalIndex)/7);
+					//System.out.println
+				logger.info("more than one: "+ (total-finalIndex)/7);
 					for(int i=0;i<((total-finalIndex)/7);i++)
 						notVisitedMenus.add(notVisitedMenus.get(notVisitedMenus.size()-1)+7);
 					
 			}
-			else
-				System.out.println("notvisitedMenus is updated");
+			else{
+				//System.out.println
+				logger.info("notvisitedMenus is updated");
+			}
 		}
 		else{
 			//First time user coming
-			System.out.println("First time user asking for menus");
+			//System.out.println
+			logger.info("First time user asking for menus");
 			notVisitedMenus = new ArrayList<Integer>();
 			for(int i=0; i<=total; i=i+7){
 				notVisitedMenus.add(i);

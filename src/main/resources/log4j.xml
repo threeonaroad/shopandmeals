@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.bolsadeideas.tareas">
+	<logger name="com.app.shopandmeals.models">
 		<level value="info" />
 	</logger>
 	
