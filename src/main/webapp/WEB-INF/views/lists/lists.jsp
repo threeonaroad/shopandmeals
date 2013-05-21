@@ -400,7 +400,7 @@ h3 {
  <div class="list-bubble">
   <ul> 
     <? 
-	if(typeof lists !== 'undefined' && lists.length > 0){
+	if(lists != null){
 	_.each(lists,function (list){ 
     
     /* Storing a copy of every list object so we do not call the database unnecessarily */
@@ -682,7 +682,6 @@ console.log('no tienes');?>
 				var shoppingListUserModel = new ShoppingListUserModel({
 					id : username
 				});
-				//shoppingListsCollection.fetch({
 
 				shoppingListUserModel.fetch({
 					success : function(shoppingListUserModel) {
@@ -694,7 +693,16 @@ console.log('no tienes');?>
 						});
 						//var template = _.template($('#list-template').html(), {lists: shoppingListsCollection.models});
 						that.$el.html(template).hide().fadeIn('slow');
-					}
+						},
+					error : function(shoppingListUserModel){ 
+						shoppingListUserModel.unset('id','silent');
+						//console.log("lists: "+ JSON.stringify(menusModel));
+						var template = _.template($('#list-template').html(), {
+							lists : null
+						});
+						//var template = _.template($('#list-template').html(), {lists: shoppingListsCollection.models});
+						that.$el.html(template).hide().fadeIn('slow');
+	    			}
 				});
 			},
 			events : {

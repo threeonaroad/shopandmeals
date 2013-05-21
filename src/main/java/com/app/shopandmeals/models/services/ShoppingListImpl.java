@@ -30,10 +30,11 @@ public class ShoppingListImpl implements IShoppingListService {
 	
 	@Override
 	public List<ShopList> findAll(String username) {
-		List<ShopList> lists = shoppingListDao.findAll(username);
-			if(lists == null || lists.size()==0){
+		List<ShopList> lists = null; 
+		lists = shoppingListDao.findAll(username);
+			if(lists == null || lists.size() == 0){
 	    		logger.info("No lists available");
-				return new ArrayList<ShopList>();
+				return null;
 			}
 	    	else
 	    		return lists;

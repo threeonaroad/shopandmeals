@@ -47,7 +47,12 @@ public class ShoppingListController {
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = "application/json") 
 	@ResponseBody
     public List<ShopList> getShoppingLists(@PathVariable String id) throws Exception {
-      return shoppingListService.findAll(id);
+		List<ShopList> lists = null; 
+		lists = shoppingListService.findAll(id);
+		if(lists == null)
+			return null;
+		else
+			return lists; 
      
  	}
 	
